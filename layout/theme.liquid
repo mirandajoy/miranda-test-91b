@@ -36,7 +36,7 @@
 
   {% include 'social-meta-tags' %}
 
-  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {% comment pluginspeed replaced-css DON'T CHANGE %}{{ 'theme.scss.css' | asset_url | stylesheet_tag }}{% endcomment %}{%- include 'pluginspeed-minify-asset', asset: 'theme.scss.css', tag: 'stylesheet', liquid_tag: true -%}
 
   <script>
     var theme = {
@@ -67,9 +67,9 @@
     <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
   {%- endif -%}
 
-  <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
-  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  {% comment pluginspeed replaced-js DON'T CHANGE %}<script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>{% endcomment %}{%- include 'pluginspeed-minify-asset', asset: 'lazysizes.js', tag: 'script' -%} <script src="{%- include 'pluginspeed-asset-url', asset: 'lazysizes.js' -%}" async="async"></script>
+  {% comment pluginspeed replaced-js DON'T CHANGE %}<script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>{% endcomment %}{%- include 'pluginspeed-minify-asset', asset: 'vendor.js', tag: 'script' -%} <script src="{%- include 'pluginspeed-asset-url', asset: 'vendor.js' -%}" defer="defer"></script>
+  {% comment pluginspeed replaced-js DON'T CHANGE %}<script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>{% endcomment %}{%- include 'pluginspeed-minify-asset', asset: 'theme.js', tag: 'script' -%} <script src="{%- include 'pluginspeed-asset-url', asset: 'theme.js' -%}" defer="defer"></script>
 
   {{ content_for_header }}
 </head>
