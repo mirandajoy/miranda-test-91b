@@ -2,7 +2,7 @@
   ----------------------------------------------------------------------------------
    Plug in SEO Plus for Shopify
 
-   Copyright (c) 2018 Pemberton Rank Ltd, a company registered in England 7341337
+   Copyright (c) 2019 Pemberton Rank Ltd, a company registered in England 7341337
 
    This file is subject to the license at https://www.pluginseo.com/eula
   ----------------------------------------------------------------------------------
@@ -27,7 +27,10 @@
 {%- else -%}
   {%- case rootTemplate -%}
     {%- when 'index' -%}
-      {%- assign defaultPageTitle = ['shop']['name'] -%}
+      {%- assign defaultPageTitle = page.title | escape -%}
+      {%- if defaultPageTitle == blank -%}
+        {%- assign defaultPageTitle = ['shop']['name'] -%}
+      {%- endif -%}
       {%- assign pageTitleTemplate = settings.pluginseo_pageTitleIndexTemplate -%}
       {%- assign pTFTemp = '-te_ix' -%}
     {%- when 'page' -%}
@@ -97,6 +100,9 @@
     {%- capture pageTitleWithAppendage -%}{{ pageTitle }} {{ pageTitleAppend }}{%- endcapture -%}
 
     {%- assign pluginseo_pageTitleTruncateChars = settings.pluginseo_pageTitleTruncateChars | plus: 0 -%}
+    {%- if pluginseo_pageTitleTruncateChars == 0 -%}
+      {%- assign pluginseo_pageTitleTruncateChars = 999 -%}
+    {%- endif -%}
     {%- assign pluginseo_pageTitleAppenderTargetLength = settings.pluginseo_pageTitleAppenderTargetLength | plus: 0 -%}
     {%- assign pageTitleLength = pageTitle | size | plus: 0 -%}
     {%- assign pageTitleWithAppendageLength = pageTitleWithAppendage | size | plus: 0 -%}
@@ -107,13 +113,17 @@
     {%- endif -%}
   {%- endif -%}
 
-  {%- if settings.pluginseo_pageTitleTruncateChars != nil -%}
+  {%- if settings.pluginseo_pageTitleTruncateChars != blank -%}
     {%- assign finalPageTitleLength = pageTitle | size | plus: 0 -%}
     {%- assign pluginseo_pageTitleTruncateChars = settings.pluginseo_pageTitleTruncateChars | plus: 0 -%}
+    {%- if pluginseo_pageTitleTruncateChars == 0 -%}
+      {%- assign pluginseo_pageTitleTruncateChars = 999 -%}
+    {%- endif -%}
+
     {%- if finalPageTitleLength > pluginseo_pageTitleTruncateChars -%}
       {%- assign pTF = pTF | append: '-tr' -%}
     {%- endif -%}
-    {%- capture pageTitle -%}{{ pageTitle | truncate: settings.pluginseo_pageTitleTruncateChars, "" }}{%- endcapture -%}
+    {%- capture pageTitle -%}{{ pageTitle | truncate: pluginseo_pageTitleTruncateChars, "" }}{%- endcapture -%}
   {%- endif -%}
   <title>{{ pageTitle | strip_html | strip_newlines }}</title>
 {%- endif -%}
