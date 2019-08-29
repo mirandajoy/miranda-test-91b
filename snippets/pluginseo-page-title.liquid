@@ -16,12 +16,16 @@
 
 {%- if hasLangify == true and detectedLanguage != shop.metafields["languages"]["default"] -%}
   {%- assign pTF = pTF | append: '-lf' -%}
-  <title>
-    {{ langify_title | strip_html | strip_newlines }}
-      {% unless langify_title contains langify_shop_name %}
-        &mdash; {{ langify_shop_name }}
-    {% endunless %}
-  </title>
+  {%- if rootTemplate == 'index' -%}
+    <title>[Homepage page title]</title>
+  {%- elsif rootTemplate == '404' -%}
+    <title>[404 page title]</title>
+  {%- elsif rootTemplate == 'search' -%}
+    <title>[Search page title]</title>
+  {%- else -%}
+    {%- assign pTF = pTF | append: '-ap' -%}
+    <title>{{ langify_title | strip_html | strip_newlines }} [Append]</title>
+  {%- endif -%}
 {%- else -%}
   {%- case rootTemplate -%}
     {%- when 'index' -%}

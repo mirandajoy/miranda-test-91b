@@ -17,7 +17,15 @@
 
 {%- if hasLangify == true and detectedLanguage != shop.metafields["languages"]["default"] -%}
   {%- assign mDF = mDF | append: '-lf' -%}
-  <meta name="description" content="{{- langify_description -}}" />
+  {%- if rootTemplate == 'index' -%}
+    <meta name="description" content="[Homepage meta description]" />
+  {%- elsif rootTemplate == '404' -%}
+    <meta name="description" content="[404 meta description]" />
+  {%- elsif rootTemplate == 'search' -%}
+    <meta name="description" content="[Search meta description]" />
+  {%- else -%}
+    <meta name="description" content="{{- langify_description -}}" />
+  {%- endif -%}
 {%- else -%}
   {%- case rootTemplate -%}
     {%- when 'index' -%}
